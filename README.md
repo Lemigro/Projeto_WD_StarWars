@@ -33,7 +33,7 @@ A API utilizada neste projeto é a [SWAPI](https://swapi.dev/), que fornece dado
 5. **Navegação**: O aplicativo deve oferecer navegação por meio de um **TabLayout**, permitindo fácil alternância entre categorias.
 
 ## Protótipo
-O protótipo do projeto pode ser visualizado no [Figma]([https://www.figma.com](https://www.figma.com/design/j7nAq9VF63f0OtkkcTaiUo/Star-Wars-App?node-id=0-1&t=e0FaLad9ubuRNME3-1)), onde estão detalhados os fluxos de navegação e interfaces.
+O protótipo do projeto pode ser visualizado no [Figma](https://www.figma.com/design/j7nAq9VF63f0OtkkcTaiUo/Star-Wars-App?node-id=0-1&t=e0FaLad9ubuRNME3-1), onde estão detalhados os fluxos de navegação e interfaces.
 
 ## Como Executar o Projeto
 
