@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/yellow_500"
+    android:padding="16dp">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="168dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/starwars_logo" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@color/edittext_background"
+        android:gravity="center"
+        android:hint="@string/type_email"
+        android:inputType="textEmailAddress"
+        android:padding="8dp"
+        android:textColor="@color/primary_text"
+        android:textSize="16sp" />
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@color/edittext_background"
+        android:gravity="center"
+        android:hint="@string/type_password"
+        android:inputType="textPassword"
+        android:padding="8dp"
+        android:textColor="@color/primary_text"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btLogin"
+        android:layout_width="105dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/type_login"
+        android:textColor="@color/yellow_200"
+        android:textSize="16sp" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/type_add"
+        android:layout_marginTop="16dp"
+        android:background="@color/black"
+        android:textColor="@color/yellow_700"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:padding="8dp"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+
+</LinearLayout>

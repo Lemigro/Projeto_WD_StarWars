@@ -46,6 +46,12 @@ Link do Protótipo: [(https://www.figma.com/design/j7nAq9VF63f0OtkkcTaiUo/Star-W
 
 ### Passos para Execução
 
+<<<<<<< HEAD
 1. Clone este repositório:  
    ```bash
    git clone https://github.com/seu_usuario/star-wars-app.git
+=======
+1. Clone este repositório:
+   ```bash
+   git clone https://github.com/seu_usuario/star-wars-app.git
+>>>>>>> dev
