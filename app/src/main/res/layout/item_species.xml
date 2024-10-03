@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp">
+
+
+    <ImageView
+        android:id="@+id/speciesImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/human" />
+
+    <TextView
+        android:id="@+id/speciesName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Human"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginTop="8dp" />
+</LinearLayout>

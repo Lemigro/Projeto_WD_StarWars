@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "44458768270",
+    "firebase_url": "https://star-wars-app-892e0-default-rtdb.firebaseio.com",
+    "project_id": "star-wars-app-892e0",
+    "storage_bucket": "star-wars-app-892e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44458768270:android:fa12efd0f1b3bd9b4916df",
+        "android_client_info": {
+          "package_name": "com.example.starwarsapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrjsYrjWjO2cNZKKCXQLMa9W8cR_o7Wqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

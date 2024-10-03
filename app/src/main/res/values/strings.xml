@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Star Wars APP</string>
+    <string name="name">Nome Completo</string>
+    <string name="phone">Número de Telefone</string>
+    <string name="age">Idade</string>
+    <string name="hobby">Hobby</string>
+    <string name="sex">Sexo</string>
+    <string name="btAddPerson">Adicionar Pessoa</string>
+    <string name="welcome_message">Bem-vindo!</string>
+    <string name="type_login">Login</string>
+    <string name="type_email">Digite seu E-mail</string>
+    <string name="type_password">Digite sua Senha</string>
+    <string name="type_add">Cadastrar</string>
+    <string name="bt_login">Entrar</string>
+    <string name="bt_register">Cadastrar</string>
+    <string name="bt_update">Atualizar Cadastro</string>
+    <string name="bt_back">Voltar para Login</string>
+    <string name="describe_luke">Luke Skywalker é o protagonista da trilogia original da franquia Star Wars(1977-1983),
+        além de fazer participação em quatro filmes de outras duas trilogias A Vingança dos Sith(2005),
+        O Despertar da Força, Os Últimos Jedi e A Ascensão Skywalker(2015-2019). E é interpretado pelo ator norte-americano Mark Hamill.
+        Luke era um fazendeiro que vivia em um remoto planeta desértico, e que se tornou um grande mestre jedi (iniciado por Obi-Wan Kenobi),
+        após a morte dos seus tios. Um personagem essencial e importante na luta da Aliança Rebelde contra o Império Galáctico,
+        é o irmão gêmeo da líder rebelde Princesa Leia Organa de Alderaan, O qual foram separados nós seus primeiros dias de vida afim de protegê-los,
+        foi amigo do mercenário e contrabandista Han Solo, aprendiz do Grão-mestre Jedi Yoda,
+        e o filho do Jedi caído Darth Vader (Anakin Skywalker) e da Rainha de Naboo/Senadora da República Padmé Amidala.
+        Ele é o tio e antigo mestre de Kylo Ren, antes deste ter se convertido ao Lado Negro da Força.
+        Em 2008, o personagem foi escolhido pela revista Empire como o 54º maior personagem de filmes de todos os tempos.
+        Em sua lista dos 100 Maiores Personagens de Ficção, a Fandomania.com classificou Luke na 14ª posição</string>
+
+
+
+    <string name="name_required">O campo Nome Completo é obrigatório.</string>
+    <string name="error_name_required">O campo Nome Completo é obrigatório.</string>
+    <string name="error_phone_required">O campo Número de Telefone é obrigatório.</string>
+    <string name="error_age_required">O campo Idade é obrigatório.</string>
+    <string name="invalid_phone">O número de telefone deve estar no formato (XX) XXXXX-XXXX.</string>
+    <string name="message_field_required">O campo %s é obrigatório.</string>
+</resources>
