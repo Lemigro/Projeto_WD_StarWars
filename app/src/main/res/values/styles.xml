@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Tema padrão da aplicação -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Definindo cores principais -->
+        <item name="colorPrimary">@color/yellow_500</item> <!-- Cor da barra superior -->
+        <item name="colorPrimaryDark">@color/black</item>  <!-- Cor da barra de status -->
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorOnPrimary">@color/black</item> <!-- Cor do texto da barra superior -->
+    </style>
+
+    <!-- Estilo personalizado para a Toolbar -->
+    <style name="ToolBarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/yellow_500</item> <!-- Cor amarela para a Toolbar -->
+        <item name="titleTextColor">@color/black</item> <!-- Cor preta para o texto da Toolbar -->
+    </style>
+
+</resources>
