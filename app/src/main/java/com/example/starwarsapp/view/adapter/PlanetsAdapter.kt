@@ -1,5 +1,6 @@
 package com.example.starwarsapp.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,7 @@ class PlanetsAdapter(
             binding.planetName.text = planetsModel.name
 
             Glide.with(binding.planetImage.context)
-                .load(getImageUrl(planetsModel.url))
+                .load(planetsModel.url?.let { getImageUrl(it) })
                 .placeholder(R.drawable.placeholder)
                 .into(binding.planetImage)
 
@@ -29,6 +30,7 @@ class PlanetsAdapter(
 
         private fun getImageUrl(url: String): String {
             val id = url.trimEnd('/').split("/").last()
+            Log.d("PlanetsAdapter", "ID do planeta: $id")
             return "https://starwars-visualguide.com/assets/img/planets/$id.jpg"
         }
     }

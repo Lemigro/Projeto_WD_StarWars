@@ -37,9 +37,11 @@ class FavoritesFragment : Fragment() {
 
         favoritesAdapter = FavoritesAdapter(mutableListOf()) { selectedFavorite ->
             val intent = Intent(requireContext(), DetailItemActivity::class.java).apply {
+                putExtra("ITEM_ID", selectedFavorite.itemId)
+                putExtra("ITEM_TYPE", selectedFavorite.itemType)
                 putExtra("ITEM_NAME", selectedFavorite.title)
                 putExtra("ITEM_DESCRIPTION", selectedFavorite.description)
-                putExtra("ITEM_IMAGE_RES_ID", selectedFavorite.imageResId)
+                putExtra("ITEM_IMAGE_URL", selectedFavorite.imageUrl)
             }
             startActivity(intent)
         }

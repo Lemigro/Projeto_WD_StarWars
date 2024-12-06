@@ -1,5 +1,6 @@
 package com.example.starwarsapp.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,7 @@ class FilmsAdapter(
             binding.filmsTitle.text = film.title
 
             Glide.with(binding.filmsImage.context)
-                .load(getImageUrl(film.url))
+                .load(film.url?.let { getImageUrl(it) })
                 .placeholder(R.drawable.placeholder)
                 .into(binding.filmsImage)
 
@@ -29,6 +30,7 @@ class FilmsAdapter(
 
         private fun getImageUrl(url: String): String {
             val id = url.trimEnd('/').split("/").last()
+            Log.d("FilmsAdapter", "ID do filme: $id")
             return "https://starwars-visualguide.com/assets/img/films/$id.jpg"
         }
     }

@@ -5,19 +5,21 @@ import com.example.starwarsapp.repository.FilmsRepository
 
 class FilmsController(private val filmsRepository: FilmsRepository) {
 
-    fun fetchFilms(page: Int, onSuccess: (List<FilmsModel>) -> Unit, onError: (Throwable) -> Unit) {
-        filmsRepository.getFilms(
-            page,
-            onSuccess = { films ->
-                onSuccess(films)
-            },
-            onError = { throwable ->
-                onError(throwable)
-            }
-        )
+    suspend fun fetchFilms(
+        page: Int,
+        onSuccess: (List<FilmsModel>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val result = filmsRepository.getFilms(page)
+        result.onSuccess(onSuccess).onFailure(onError)
     }
 
-    fun getFilmDetails(id: String, onSuccess: (FilmsModel) -> Unit, onError: (Throwable) -> Unit) {
-        filmsRepository.getFilmById(id, onSuccess, onError)
+    suspend fun getFilmDetails(
+        id: String,
+        onSuccess: (FilmsModel) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val result = filmsRepository.getFilmById(id)
+        result.onSuccess(onSuccess).onFailure(onError)
     }
 }

@@ -19,7 +19,6 @@ class MainPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
         const val TOTAL_FRAGMENTS = 7
     }
 
-    override fun getItemCount(): Int = TOTAL_FRAGMENTS
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
@@ -33,4 +32,6 @@ class MainPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
             else -> PeoplesFragment()
         }
     }
+
+    override fun getItemCount(): Int = TOTAL_FRAGMENTS
 }

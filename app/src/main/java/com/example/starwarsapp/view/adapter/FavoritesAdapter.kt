@@ -14,7 +14,6 @@ class FavoritesAdapter(
     class ViewHolder(private val binding: ItemFavoritesBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(favorite: FavoritesModel, onClick: (FavoritesModel) -> Unit) {
             binding.favoritesTitle.text = favorite.title
-            binding.favoritesImage.setImageResource(favorite.imageResId)
             binding.root.setOnClickListener { onClick(favorite) }
         }
     }
@@ -36,13 +35,8 @@ class FavoritesAdapter(
         notifyDataSetChanged()
     }
 
-    fun addFavorite(favorite: FavoritesModel) {
-        favorites.add(favorite)
-        notifyItemInserted(favorites.size - 1)
-    }
-
     fun removeFavorite(favorite: FavoritesModel) {
-        val index = favorites.indexOf(favorite)
+        val index = favorites.indexOfFirst { it.itemId == favorite.itemId }
         if (index >= 0) {
             favorites.removeAt(index)
             notifyItemRemoved(index)

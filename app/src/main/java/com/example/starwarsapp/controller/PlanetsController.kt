@@ -5,19 +5,21 @@ import com.example.starwarsapp.repository.PlanetsRepository
 
 class PlanetsController(private val planetsRepository: PlanetsRepository) {
 
-    fun fetchPlanets(page: Int, onSuccess: (List<PlanetsModel>) -> Unit, onError: (Throwable) -> Unit) {
-        planetsRepository.getPlanets(
-            page,
-            onSuccess = { planets ->
-                onSuccess(planets)
-            },
-            onError = { throwable ->
-                onError(throwable)
-            }
-        )
+    suspend fun fetchPlanets(
+        page: Int,
+        onSuccess: (List<PlanetsModel>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val result = planetsRepository.getPlanets(page)
+        result.onSuccess(onSuccess).onFailure(onError)
     }
 
-    fun getPlanetDetails(id: String, onSuccess: (PlanetsModel) -> Unit, onError: (Throwable) -> Unit) {
-        planetsRepository.getPlanetById(id, onSuccess, onError)
+    suspend fun getPlanetDetails(
+        id: String,
+        onSuccess: (PlanetsModel) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val result = planetsRepository.getPlanetById(id)
+        result.onSuccess(onSuccess).onFailure(onError)
     }
 }

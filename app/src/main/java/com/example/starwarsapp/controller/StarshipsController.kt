@@ -3,21 +3,23 @@ package com.example.starwarsapp.controller
 import com.example.starwarsapp.model.StarshipsModel
 import com.example.starwarsapp.repository.StarshipsRepository
 
-class StarshipsController(private val starshipRepository: StarshipsRepository) {
+class StarshipsController(private val starshipsRepository: StarshipsRepository) {
 
-    fun fetchStarships(page: Int, onSuccess: (List<StarshipsModel>) -> Unit, onError: (Throwable) -> Unit) {
-        starshipRepository.getStarships(
-            page,
-            onSuccess = { starships ->
-                onSuccess(starships)
-            },
-            onError = { throwable ->
-                onError(throwable)
-            }
-        )
+    suspend fun fetchStarships(
+        page: Int,
+        onSuccess: (List<StarshipsModel>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val result = starshipsRepository.getStarships(page)
+        result.onSuccess(onSuccess).onFailure(onError)
     }
 
-    fun getStarshipDetails(id: String, onSuccess: (StarshipsModel) -> Unit, onError: (Throwable) -> Unit) {
-        starshipRepository.getStarshipById(id, onSuccess, onError)
+    suspend fun getStarshipDetails(
+        id: String,
+        onSuccess: (StarshipsModel) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val result = starshipsRepository.getStarshipById(id)
+        result.onSuccess(onSuccess).onFailure(onError)
     }
 }

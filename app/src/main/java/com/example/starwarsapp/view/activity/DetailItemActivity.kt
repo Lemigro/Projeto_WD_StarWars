@@ -1,243 +1,198 @@
-//package com.example.starwarsapp.view.activity
-//
-//import android.os.Bundle
-//import android.widget.Toast
-//import androidx.appcompat.app.AppCompatActivity
-//import com.bumptech.glide.Glide
-//import com.example.starwarsapp.R
-//import com.example.starwarsapp.databinding.ActivityDetailItemBinding
-//import com.example.starwarsapp.controller.*
-//import com.example.starwarsapp.model.*
-//import com.example.starwarsapp.repository.*
-//
-//class DetailItemActivity : AppCompatActivity() {
-//
-//    private lateinit var binding: ActivityDetailItemBinding
-//    private var isFavorite: Boolean = false
-//    private lateinit var favoritesController: FavoritesController
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        binding = ActivityDetailItemBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        val favoritesRepository = FavoritesRepository()
-//        favoritesController = FavoritesController(favoritesRepository)
-//
-//        setSupportActionBar(binding.toolbar)
-//        supportActionBar?.title = "Detalhes"
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//
-//        val itemType = intent.getStringExtra("ITEM_TYPE") ?: ""
-//        val itemId = intent.getStringExtra("ITEM_ID") ?: ""
-//
-//        loadItemDetails(itemType, itemId)
-//
-//        binding.fabFavorite.setOnClickListener {
-//            toggleFavorite(itemId, itemType)
-//        }
-//    }
-//
-//    private fun loadItemDetails(itemType: String, itemId: String) {
-//        when (itemType) {
-//            "vehicle" -> {
-//                val vehiclesController = VehiclesController(VehiclesRepository())
-//                vehiclesController.getVehicleDetails(itemId,
-//                    onSuccess = { vehicle -> displayVehicleDetails(vehicle) },
-//                    onError = { error -> showToast("Erro ao carregar os detalhes: ${error.message}") }
-//                )
-//            }
-//            "people" -> {
-//                val peoplesController = PeoplesController(PeoplesRepository())
-//                peoplesController.getPeopleDetails(itemId,
-//                    onSuccess = { people -> displayPeopleDetails(people) },
-//                    onError = { error -> showToast("Erro ao carregar os detalhes: ${error.message}") }
-//                )
-//            }
-//            "starship" -> {
-//                val starshipsController = StarshipsController(StarshipsRepository())
-//                starshipsController.getStarshipDetails(itemId,
-//                    onSuccess = { starship -> displayStarshipDetails(starship) },
-//                    onError = { error -> showToast("Erro ao carregar os detalhes: ${error.message}") }
-//                )
-//            }
-//            "film" -> {
-//                val filmsController = FilmsController(FilmsRepository())
-//                filmsController.getFilmDetails(itemId,
-//                    onSuccess = { film -> displayFilmDetails(film) },
-//                    onError = { error -> showToast("Erro ao carregar os detalhes: ${error.message}") }
-//                )
-//            }
-//            "species" -> {
-//                val speciesController = SpeciesController(SpeciesRepository())
-//                speciesController.getSpeciesDetails(itemId,
-//                    onSuccess = { species -> displaySpeciesDetails(species) },
-//                    onError = { error -> showToast("Erro ao carregar os detalhes: ${error.message}") }
-//                )
-//            }
-//            "planet" -> {
-//                val planetsController = PlanetsController(PlanetsRepository())
-//                planetsController.getPlanetDetails(itemId,
-//                    onSuccess = { planet -> displayPlanetDetails(planet) },
-//                    onError = { error -> showToast("Erro ao carregar os detalhes: ${error.message}") }
-//                )
-//            }
-//            else -> showToast("Tipo de item desconhecido")
-//        }
-//    }
-//
-//    private fun toggleFavorite(itemId: String, itemType: String) {
-//        isFavorite = !isFavorite
-//
-//        if (isFavorite) {
-//            binding.fabFavorite.setImageResource(R.drawable.ic_favorite)
-//            showToast("Adicionado aos favoritos")
-//
-//            val favorite = FavoritesModel(itemId, itemType)
-//            favoritesController.saveFavorites("userId", favorite,
-//                onSuccess = { showToast("Favorito salvo com sucesso") },
-//                onFailure = { error -> showToast("Erro ao salvar favorito: $error") }
-//            )
-//        } else {
-//            binding.fabFavorite.setImageResource(R.drawable.ic_favorite_border)
-//            showToast("Removido dos favoritos")
-//
-//            val favorite = FavoritesModel(itemId, itemType)
-//            favoritesController.removeFavorites("userId", favorite,
-//                onSuccess = { showToast("Favorito removido com sucesso") },
-//                onFailure = { error -> showToast("Erro ao remover favorito: $error") }
-//            )
-//        }
-//    }
-//
-//    private fun displayVehicleDetails(vehiclesModel: VehiclesModel) {
-//        binding.itemName.text = vehiclesModel.name
-//        binding.itemDescription.text = vehiclesModel.model
-//    }
-//
-//    private fun displayPeopleDetails(peoplesModel: PeoplesModel) {
-//        binding.itemName.text = peoplesModel.name
-//        binding.itemDescription.text = peoplesModel.mass
-//    }
-//
-//    private fun displayStarshipDetails(starshipsModel: StarshipsModel) {
-//        binding.itemName.text = starshipsModel.name
-//        binding.itemDescription.text = starshipsModel.model
-//    }
-//
-//    private fun displayFilmDetails(filmsModel: FilmsModel) {
-//        binding.itemName.text = filmsModel.title
-//        binding.itemDescription.text = filmsModel.openingCrawl
-//    }
-//
-//    private fun displaySpeciesDetails(speciesModel: SpeciesModel) {
-//        binding.itemName.text = speciesModel.name
-//        binding.itemDescription.text = speciesModel.classification
-//    }
-//
-//    private fun displayPlanetDetails(planetsModel: PlanetsModel) {
-//        binding.itemName.text = planetsModel.name
-//        binding.itemDescription.text = planetsModel.climate
-//    }
-//
-//    private fun showToast(message: String) {
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-//    }
-//
-//    override fun onSupportNavigateUp(): Boolean {
-//        this.onBackPressedDispatcher.onBackPressed()
-//        return true
-//    }
-//}
-
-
-
 package com.example.starwarsapp.view.activity
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.starwarsapp.R
+import com.example.starwarsapp.adapter.DetailsAdapter
+import com.example.starwarsapp.controller.DetailsController
+import com.example.starwarsapp.controller.FavoritesController
 import com.example.starwarsapp.databinding.ActivityDetailItemBinding
-import com.example.starwarsapp.controller.PeoplesController
-import com.example.starwarsapp.model.PeoplesModel
-import com.example.starwarsapp.repository.PeoplesRepository
-import com.example.starwarsapp.view.adapter.DetailsAdapter
+import com.example.starwarsapp.model.DetailsModel
+import com.example.starwarsapp.model.FavoritesModel
+import com.example.starwarsapp.repository.DetailsRepository
+import com.example.starwarsapp.repository.FavoritesRepository
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class DetailItemActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailItemBinding
+    private lateinit var detailsController: DetailsController
+    private lateinit var favoritesController: FavoritesController
+    private var isFavorited = false
+    private val userId: String
+        get() = FirebaseAuth.getInstance().currentUser?.uid ?: throw IllegalStateException("Usuário não autenticado")
+
+    private lateinit var currentFavorite: FavoritesModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        detailsController = DetailsController(DetailsRepository())
+        favoritesController = FavoritesController(FavoritesRepository())
+        setupToolbar()
 
-        val itemType = intent.getStringExtra("ITEM_TYPE") ?: ""
-        val itemId = intent.getStringExtra("ITEM_ID") ?: ""
+        val itemId = intent.getStringExtra(ITEM_ID) ?: ""
+        val itemType = intent.getStringExtra(ITEM_TYPE) ?: ""
+        Log.d("DetailItemActivity", "itemId: $itemId, itemType: $itemType")
 
-        if (itemType == "people") {
-            loadPeopleDetails(itemId)
+        if (itemId.isNotEmpty() && itemType.isNotEmpty()) {
+            loadDetails(itemId, itemType)
         } else {
-            showToast("Tipo de item desconhecido!")
+            Log.e("DetailItemActivity", "ITEM_ID ou ITEM_TYPE estão vazios!")
+            showError("ID ou tipo do item não fornecido.")
+        }
+        setupFavoriteButton()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            title = getString(R.string.details)
+            setDisplayHomeAsUpEnabled(true)
         }
     }
 
-    private fun loadPeopleDetails(itemId: String) {
-        val peoplesController = PeoplesController(PeoplesRepository())
-        peoplesController.getPeopleDetails(itemId,
-            onSuccess = { people -> displayPeopleDetails(people) },
-            onError = { error -> showToast("Erro ao carregar detalhes: ${error.message}") }
+    private fun loadDetails(itemId: String, itemType: String) {
+        Log.d("DetailItemActivity", "Carregando detalhes para o $itemType com ID: $itemId")
+        CoroutineScope(Dispatchers.Main).launch {
+            detailsController.fetchDetails(itemId, itemType,
+                onSuccess = { details ->
+                    Log.d("DetailItemActivity", "Detalhes obtidos com sucesso: $details")
+                    displayDetails(details, itemType)
+                    checkIfFavorited(itemId) // Lembrando que essa linha crashou o programa, tirar se der erro novamente
+                },
+                onError = { error ->
+                    Log.e("DetailItemActivity", "Erro ao tentar obter detalhes", error)
+                    showError(error.message ?: "Erro desconhecido")
+                }
+            )
+        }
+    }
+
+    private fun displayDetails(details: DetailsModel, itemType: String) {
+        Log.d("DetailItemActivity", "Exibindo detalhes de $itemType: $details.name")
+
+        binding.apply {
+            itemName.text = details.name ?: getString(R.string.no_name_available)
+            itemDescription.text = details.description ?: getString(R.string.no_description_available)
+
+            if (!details.imageUrl.isNullOrEmpty()) {
+                Glide.with(this@DetailItemActivity)
+                    .load(details.imageUrl)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder)
+                    .into(itemImageBackground)
+            } else {
+                Log.w("DetailItemActivity", "Nenhuma URL de imagem disponível para exibição.")
+                itemImageBackground.setImageResource(R.drawable.placeholder)
+            }
+
+            if (details.additionalData.isNotEmpty()) {
+                Log.d("DetailItemActivity", "Exibindo dados adicionais")
+                binding.additionalDetailsRecyclerView.layoutManager = LinearLayoutManager(this@DetailItemActivity)
+                binding.additionalDetailsRecyclerView.adapter = DetailsAdapter(details.additionalData)
+                binding.additionalDetailsRecyclerView.visibility = View.VISIBLE
+            } else {
+                Log.w("DetailItemActivity", "Nenhum dado adicional disponível para exibição.")
+                binding.additionalDetailsRecyclerView.visibility = View.GONE
+            }
+
+            currentFavorite = FavoritesModel(
+                itemId = details.name?.hashCode().toString(),
+                itemType = itemType,
+                title = details.name ?: "",
+                description = details.description ?: "",
+                imageUrl = details.imageUrl ?: ""
+            )
+            Log.d("DetailItemActivity", "Current favorite: $currentFavorite")
+        }
+    }
+
+
+    private fun checkIfFavorited(itemId: String) {
+        favoritesController.loadFavorites(userId,
+            onSuccess = { favorites ->
+                isFavorited = favorites.any { it.itemId == itemId }
+                updateFavoriteIcon()
+            },
+            onFailure = { error ->
+                Toast.makeText(this, "Erro ao verificar favoritos: $error", Toast.LENGTH_SHORT).show()
+                isFavorited = false
+                updateFavoriteIcon()
+            }
         )
     }
 
-    private fun displayPeopleDetails(peoplesModel: PeoplesModel) {
-        // Configurar os detalhes principais
-        binding.itemName.text = peoplesModel.name
-        val description = """
-            Altura: ${peoplesModel.height} cm
-            Peso: ${peoplesModel.mass} kg
-            Cor dos olhos: ${peoplesModel.eyeColor}
-            Ano de nascimento: ${peoplesModel.birthYear}
-            Gênero: ${peoplesModel.gender}
-        """.trimIndent()
-        binding.itemDescription.text = description
+    private fun setupFavoriteButton() {
+        binding.fabFavorite.setOnClickListener {
+            isFavorited = !isFavorited
+            updateFavoriteIcon()
 
-        // Carregar imagem
-        Glide.with(this)
-            .load(getImageUrl(peoplesModel.url))
-            .placeholder(R.drawable.placeholder)
-            .into(binding.itemImageBackground)
-
-        // Configurar RecyclerView para filmes, veículos e naves
-        setupRecyclerView(binding.relatedFilmsRecyclerView, peoplesModel.films, "Filmes")
-        setupRecyclerView(binding.relatedVehiclesRecyclerView, peoplesModel.vehicles, "Veículos")
-        setupRecyclerView(binding.relatedStarshipsRecyclerView, peoplesModel.starships, "Naves")
-    }
-
-    private fun setupRecyclerView(recyclerView: androidx.recyclerview.widget.RecyclerView, items: List<String>, label: String) {
-        if (items.isNotEmpty()) {
-            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = DetailsAdapter(items, label)
+            if (isFavorited) {
+                saveFavorite()
+            } else {
+                removeFavorite()
+            }
         }
     }
 
-    private fun getImageUrl(url: String): String {
-        val id = url.trimEnd('/').split("/").last()
-        return "https://starwars-visualguide.com/assets/img/characters/$id.jpg"
+    private fun saveFavorite() {
+        favoritesController.saveFavorites(
+            userId,
+            currentFavorite,
+            onSuccess = {
+                Toast.makeText(this, "Favorito salvo com sucesso!", Toast.LENGTH_SHORT).show()
+            },
+            onFailure = { error ->
+                Toast.makeText(this, "Erro ao salvar favorito: $error", Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun removeFavorite() {
+        Log.d("DetailItemActivity", "Favorito atual: $currentFavorite")
+        favoritesController.removeFavorites(
+            userId,
+            currentFavorite,
+            onSuccess = {
+                Toast.makeText(this, "Favorito removido com sucesso!", Toast.LENGTH_SHORT).show()
+            },
+            onFailure = { error ->
+                Toast.makeText(this, "Erro ao remover favorito: $error", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+
+    private fun updateFavoriteIcon() {
+        Log.d("DetailItemActivity", "Favorito atual: $currentFavorite")
+        val iconRes = if (isFavorited) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+        binding.fabFavorite.setImageResource(iconRes)
+    }
+
+    private fun showError(message: String) {
+        binding.apply {
+            itemName.text = getString(R.string.error)
+            itemDescription.text = message
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
+        onBackPressed()
         return true
+    }
+
+    companion object {
+        const val ITEM_ID = "ITEM_ID"
+        const val ITEM_TYPE = "ITEM_TYPE"
     }
 }

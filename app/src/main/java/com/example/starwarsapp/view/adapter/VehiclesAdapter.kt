@@ -1,5 +1,6 @@
 package com.example.starwarsapp.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,7 @@ class VehiclesAdapter(
             binding.vehiclesName.text = vehiclesModel.name
 
             Glide.with(binding.vehiclesImage.context)
-                .load(getImageUrl(vehiclesModel.url))
+                .load(vehiclesModel.url?.let { getImageUrl(it) })
                 .placeholder(R.drawable.placeholder)
                 .into(binding.vehiclesImage)
 
@@ -29,6 +30,7 @@ class VehiclesAdapter(
 
         private fun getImageUrl(url: String): String {
             val id = url.trimEnd('/').split("/").last()
+            Log.d("VehiclesAdapter", "ID do veículo: $id")
             return "https://starwars-visualguide.com/assets/img/vehicles/$id.jpg"
         }
     }

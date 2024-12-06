@@ -3,55 +3,41 @@ package com.example.starwarsapp.repository
 import com.example.starwarsapp.model.VehiclesModel
 import com.example.starwarsapp.network.ApiClient
 import com.example.starwarsapp.network.ApiResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class VehiclesRepository {
 
-    fun getVehicles(page: Int, onSuccess: (List<VehiclesModel>) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getVehicles(page)
-
-        call.enqueue(object : Callback<ApiResponse<VehiclesModel>> {
-            override fun onResponse(call: Call<ApiResponse<VehiclesModel>>, response: Response<ApiResponse<VehiclesModel>>) {
-                if (response.isSuccessful) {
-                    val vehicles = response.body()?.results
-                    if (!vehicles.isNullOrEmpty()) {
-                        onSuccess(vehicles)
-                    } else {
-                        onError(Throwable("A resposta dos veículos está vazia ou nula"))
-                    }
-                } else {
-                    onError(Throwable("Falha ao buscar os veículos: Código ${response.code()}, ${response.message()}"))
-                }
-            }
-
-            override fun onFailure(call: Call<ApiResponse<VehiclesModel>>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
-            }
-        })
+    private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
+        return try {
+            Result.success(apiCall())
+        } catch (e: Exception) {
+            Result.failure(Throwable("Erro de rede: ${e.message}", e))
+        }
     }
 
-    fun getVehicleById(id: String, onSuccess: (VehiclesModel) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getVehiclesById(id)
-
-        call.enqueue(object : Callback<VehiclesModel> {
-            override fun onResponse(call: Call<VehiclesModel>, response: Response<VehiclesModel>) {
-                if (response.isSuccessful) {
-                    val vehicle = response.body()
-                    if (vehicle != null) {
-                        onSuccess(vehicle)
-                    } else {
-                        onError(Throwable("A resposta do veículo está vazia"))
-                    }
+    suspend fun getVehicles(page: Int): Result<List<VehiclesModel>> {
+        return safeApiCall {
+            val response = ApiClient.apiService.getVehicles(page)
+            if (response.isSuccessful) {
+                val vehicles = response.body()?.results
+                if (!vehicles.isNullOrEmpty()) {
+                    vehicles
                 } else {
-                    onError(Throwable("Falha ao buscar detalhes do veículo: Código ${response.code()}, ${response.message()}"))
+                    throw Throwable("A resposta dos veículos está vazia ou nula")
                 }
+            } else {
+                throw Throwable("Falha ao buscar os veículos: Código ${response.code()}, ${response.message()}")
             }
+        }
+    }
 
-            override fun onFailure(call: Call<VehiclesModel>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
+    suspend fun getVehicleById(id: String): Result<VehiclesModel> {
+        return safeApiCall {
+            val response = ApiClient.apiService.getVehiclesById(id)
+            if (response.isSuccessful) {
+                response.body() ?: throw Throwable("A resposta do veículo está vazia")
+            } else {
+                throw Throwable("Falha ao buscar detalhes do veículo: Código ${response.code()}, ${response.message()}")
             }
-        })
+        }
     }
 }

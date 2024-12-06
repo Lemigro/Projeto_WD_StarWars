@@ -2,11 +2,13 @@ package com.example.starwarsapp.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwarsapp.databinding.FragmentPlanetsBinding
@@ -15,6 +17,7 @@ import com.example.starwarsapp.model.PlanetsModel
 import com.example.starwarsapp.repository.PlanetsRepository
 import com.example.starwarsapp.view.activity.DetailItemActivity
 import com.example.starwarsapp.view.adapter.PlanetsAdapter
+import kotlinx.coroutines.launch
 
 class PlanetsFragment : Fragment() {
 
@@ -62,26 +65,39 @@ class PlanetsFragment : Fragment() {
 
     private fun loadPlanets(page: Int) {
         isLoading = true
-        planetsController.fetchPlanets(
-            page,
-            onSuccess = { planets ->
-                planetsList.addAll(planets)
-                planetsAdapter.notifyDataSetChanged()
-                isLoading = false
-            },
-            onError = { error ->
-                Toast.makeText(context, "Erro ao carregar planetas: ${error.message}", Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                planetsController.fetchPlanets(
+                    page,
+                    onSuccess = { planets ->
+                        planetsList.addAll(planets)
+//                        planetsAdapter.notifyDataSetChanged()
+                        isLoading = false
+                    },
+                    onError = { error ->
+                        showToast("Erro ao carregar planetas: ${error.message}")
+                        isLoading = false
+                    }
+                )
+            } catch (e: Exception) {
+                showToast("Erro inesperado ao carregar planetas: ${e.message}")
                 isLoading = false
             }
-        )
+        }
     }
 
     private fun navigateToDetail(planetsModel: PlanetsModel) {
+        Log.d("PlanetsFragment", "Entrou no navigateToDetail de Planets")
         val intent = Intent(requireContext(), DetailItemActivity::class.java).apply {
-            putExtra("ITEM_NAME", planetsModel.name)
-            putExtra("ITEM_URL", planetsModel.url)
+            putExtra(DetailItemActivity.ITEM_ID, planetsModel.id)
+            putExtra(DetailItemActivity.ITEM_TYPE, "planets")
+            Log.d("PlanetsFragment", "ITEM_ID: ${planetsModel.id}, ITEM_TYPE: planets")
         }
         startActivity(intent)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

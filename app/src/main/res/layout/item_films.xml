@@ -6,7 +6,6 @@
     android:gravity="center"
     android:padding="8dp">
 
-    <!-- Imagem dos filmes -->
     <ImageView
         android:id="@+id/filmsImage"
         android:layout_width="120dp"

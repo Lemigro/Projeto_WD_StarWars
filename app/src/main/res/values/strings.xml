@@ -25,15 +25,13 @@
     <string name="invalid_phone">O número de telefone deve estar no formato (XX) XXXXX-XXXX.</string>
     <string name="message_field_required">O campo %s é obrigatório.</string>
 
-
-
-        <string name="tab_peoples">Peoples</string>
-        <string name="tab_planets">Planets</string>
-        <string name="tab_vehicles">Vehicles</string>
-        <string name="tab_species">Species</string>
-        <string name="tab_starships">Starships</string>
-        <string name="tab_films">Films</string>
-        <string name="tab_favorites">Favorites</string>
+    <string name="tab_peoples">Peoples</string>
+    <string name="tab_planets">Planets</string>
+    <string name="tab_vehicles">Vehicles</string>
+    <string name="tab_species">Species</string>
+    <string name="tab_starships">Starships</string>
+    <string name="tab_films">Films</string>
+    <string name="tab_favorites">Favorites</string>
 
 
 </resources>

@@ -3,55 +3,41 @@ package com.example.starwarsapp.repository
 import com.example.starwarsapp.model.SpeciesModel
 import com.example.starwarsapp.network.ApiClient
 import com.example.starwarsapp.network.ApiResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SpeciesRepository {
 
-    fun getSpecies(page: Int, onSuccess: (List<SpeciesModel>) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getSpecies(page)
-
-        call.enqueue(object : Callback<ApiResponse<SpeciesModel>> {
-            override fun onResponse(call: Call<ApiResponse<SpeciesModel>>, response: Response<ApiResponse<SpeciesModel>>) {
-                if (response.isSuccessful) {
-                    val speciesList = response.body()?.results
-                    if (!speciesList.isNullOrEmpty()) {
-                        onSuccess(speciesList)
-                    } else {
-                        onError(Throwable("A resposta das espécies está vazia ou nula"))
-                    }
-                } else {
-                    onError(Throwable("Falha ao buscar as espécies: Código ${response.code()}, ${response.message()}"))
-                }
-            }
-
-            override fun onFailure(call: Call<ApiResponse<SpeciesModel>>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
-            }
-        })
+    private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
+        return try {
+            Result.success(apiCall())
+        } catch (e: Exception) {
+            Result.failure(Throwable("Erro de rede: ${e.message}", e))
+        }
     }
 
-    fun getSpeciesById(id: String, onSuccess: (SpeciesModel) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getSpeciesById(id)
-
-        call.enqueue(object : Callback<SpeciesModel> {
-            override fun onResponse(call: Call<SpeciesModel>, response: Response<SpeciesModel>) {
-                if (response.isSuccessful) {
-                    val species = response.body()
-                    if (species != null) {
-                        onSuccess(species)
-                    } else {
-                        onError(Throwable("A resposta da espécie está vazia"))
-                    }
+    suspend fun getSpecies(page: Int): Result<List<SpeciesModel>> {
+        return safeApiCall {
+            val response = ApiClient.apiService.getSpecies(page)
+            if (response.isSuccessful) {
+                val speciesList = response.body()?.results
+                if (!speciesList.isNullOrEmpty()) {
+                    speciesList
                 } else {
-                    onError(Throwable("Falha ao buscar detalhes da espécie: Código ${response.code()}, ${response.message()}"))
+                    throw Throwable("A resposta das espécies está vazia ou nula")
                 }
+            } else {
+                throw Throwable("Falha ao buscar as espécies: Código ${response.code()}, ${response.message()}")
             }
+        }
+    }
 
-            override fun onFailure(call: Call<SpeciesModel>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
+    suspend fun getSpeciesById(id: String): Result<SpeciesModel> {
+        return safeApiCall {
+            val response = ApiClient.apiService.getSpeciesById(id)
+            if (response.isSuccessful) {
+                response.body() ?: throw Throwable("A resposta da espécie está vazia")
+            } else {
+                throw Throwable("Falha ao buscar detalhes da espécie: Código ${response.code()}, ${response.message()}")
             }
-        })
+        }
     }
 }

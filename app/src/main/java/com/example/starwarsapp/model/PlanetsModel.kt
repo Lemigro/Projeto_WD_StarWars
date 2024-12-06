@@ -1,18 +1,23 @@
 package com.example.starwarsapp.model
 
+import com.google.gson.annotations.SerializedName
+
 data class PlanetsModel(
-    val name: String,
-    val rotationPeriod: String,
-    val orbitalPeriod: String,
-    val diameter: String,
-    val climate: String,
-    val gravity: String,
-    val terrain: String,
-    val surfaceWater: String,
-    val population: String,
-    val residents: List<String>,
-    val films: List<String>,
-    val created: String,
-    val edited: String,
-    val url: String
-)
+    @SerializedName("name") val name: String?,
+    @SerializedName("rotation_period") val rotationPeriod: String?,
+    @SerializedName("orbital_period") val orbitalPeriod: String?,
+    @SerializedName("diameter") val diameter: String?,
+    @SerializedName("climate") val climate: String?,
+    @SerializedName("gravity") val gravity: String?,
+    @SerializedName("terrain") val terrain: String?,
+    @SerializedName("surface_water") val surfaceWater: String?,
+    @SerializedName("population") val population: String?,
+    @SerializedName("residents") val residents: List<String>?,
+    @SerializedName("films") val films: List<String>?,
+    @SerializedName("created") val created: String?,
+    @SerializedName("edited") val edited: String?,
+    @SerializedName("url") val url: String?
+) {
+    val id: String?
+        get() = url?.split("/")?.filter { it.isNotEmpty() }?.lastOrNull()
+}

@@ -3,55 +3,41 @@ package com.example.starwarsapp.repository
 import com.example.starwarsapp.model.StarshipsModel
 import com.example.starwarsapp.network.ApiClient
 import com.example.starwarsapp.network.ApiResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class StarshipsRepository {
 
-    fun getStarships(page: Int, onSuccess: (List<StarshipsModel>) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getStarships(page)
-
-        call.enqueue(object : Callback<ApiResponse<StarshipsModel>> {
-            override fun onResponse(call: Call<ApiResponse<StarshipsModel>>, response: Response<ApiResponse<StarshipsModel>>) {
-                if (response.isSuccessful) {
-                    val starships = response.body()?.results
-                    if (!starships.isNullOrEmpty()) {
-                        onSuccess(starships)
-                    } else {
-                        onError(Throwable("A resposta das naves está vazia ou nula"))
-                    }
-                } else {
-                    onError(Throwable("Falha ao buscar as naves: Código ${response.code()}, ${response.message()}"))
-                }
-            }
-
-            override fun onFailure(call: Call<ApiResponse<StarshipsModel>>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
-            }
-        })
+    private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
+        return try {
+            Result.success(apiCall())
+        } catch (e: Exception) {
+            Result.failure(Throwable("Erro de rede: ${e.message}", e))
+        }
     }
 
-    fun getStarshipById(id: String, onSuccess: (StarshipsModel) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getStarshipsById(id)
-
-        call.enqueue(object : Callback<StarshipsModel> {
-            override fun onResponse(call: Call<StarshipsModel>, response: Response<StarshipsModel>) {
-                if (response.isSuccessful) {
-                    val starship = response.body()
-                    if (starship != null) {
-                        onSuccess(starship)
-                    } else {
-                        onError(Throwable("A resposta da nave está vazia"))
-                    }
+    suspend fun getStarships(page: Int): Result<List<StarshipsModel>> {
+        return safeApiCall {
+            val response = ApiClient.apiService.getStarships(page)
+            if (response.isSuccessful) {
+                val starships = response.body()?.results
+                if (!starships.isNullOrEmpty()) {
+                    starships
                 } else {
-                    onError(Throwable("Falha ao buscar detalhes da nave: Código ${response.code()}, ${response.message()}"))
+                    throw Throwable("A lista de naves está vazia")
                 }
+            } else {
+                throw Throwable("Falha ao buscar as naves: Código ${response.code()}, ${response.message()}")
             }
+        }
+    }
 
-            override fun onFailure(call: Call<StarshipsModel>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
+    suspend fun getStarshipById(id: String): Result<StarshipsModel> {
+        return safeApiCall {
+            val response = ApiClient.apiService.getStarshipsById(id)
+            if (response.isSuccessful) {
+                response.body() ?: throw Throwable("A resposta da nave está vazia")
+            } else {
+                throw Throwable("Falha ao buscar detalhes da nave: Código ${response.code()}, ${response.message()}")
             }
-        })
+        }
     }
 }

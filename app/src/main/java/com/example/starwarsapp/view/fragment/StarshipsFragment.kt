@@ -2,11 +2,13 @@ package com.example.starwarsapp.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwarsapp.databinding.FragmentStarshipsBinding
@@ -15,6 +17,7 @@ import com.example.starwarsapp.model.StarshipsModel
 import com.example.starwarsapp.repository.StarshipsRepository
 import com.example.starwarsapp.view.activity.DetailItemActivity
 import com.example.starwarsapp.view.adapter.StarshipsAdapter
+import kotlinx.coroutines.launch
 
 class StarshipsFragment : Fragment() {
 
@@ -62,25 +65,37 @@ class StarshipsFragment : Fragment() {
 
     private fun loadStarships(page: Int) {
         isLoading = true
-        starshipsController.fetchStarships(page,
-            onSuccess = { starships ->
-                starshipList.addAll(starships)
-                starshipsAdapter.notifyDataSetChanged()
-                isLoading = false
-            },
-            onError = { error ->
-                Toast.makeText(context, "Erro ao carregar naves: ${error.message}", Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                starshipsController.fetchStarships(page,
+                    onSuccess = { starships ->
+                        starshipList.addAll(starships)
+                        starshipsAdapter.notifyDataSetChanged()
+                        isLoading = false
+                    },
+                    onError = { error ->
+                        showToast("Erro ao carregar naves: ${error.message}")
+                        isLoading = false
+                    }
+                )
+            } catch (e: Exception) {
+                showToast("Erro inesperado ao carregar naves: ${e.message}")
                 isLoading = false
             }
-        )
+        }
     }
 
     private fun navigateToDetail(starshipsModel: StarshipsModel) {
+        Log.d("StarshipsFragment", "Entrou no navigateToDetail")
         val intent = Intent(requireContext(), DetailItemActivity::class.java).apply {
-            putExtra("ITEM_NAME", starshipsModel.name)
-            putExtra("ITEM_URL", starshipsModel.url)
+            putExtra(DetailItemActivity.ITEM_ID, starshipsModel.id)
+            putExtra(DetailItemActivity.ITEM_TYPE, "starships")
         }
         startActivity(intent)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

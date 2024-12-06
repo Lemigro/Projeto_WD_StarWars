@@ -1,5 +1,6 @@
 package com.example.starwarsapp.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,7 @@ class SpeciesAdapter(
             binding.speciesName.text = species.name
 
             Glide.with(binding.speciesImage.context)
-                .load(getImageUrl(species.url))
+                .load(species.url?.let { getImageUrl(it) })
                 .placeholder(R.drawable.placeholder)
                 .into(binding.speciesImage)
 
@@ -29,6 +30,7 @@ class SpeciesAdapter(
 
         private fun getImageUrl(url: String): String {
             val id = url.trimEnd('/').split("/").last()
+            Log.d("SpeciesAdapter", "ID da espécie: $id")
             return "https://starwars-visualguide.com/assets/img/species/$id.jpg"
         }
     }

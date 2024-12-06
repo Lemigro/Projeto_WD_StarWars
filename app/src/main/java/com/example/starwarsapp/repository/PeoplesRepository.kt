@@ -2,56 +2,49 @@ package com.example.starwarsapp.repository
 
 import com.example.starwarsapp.model.PeoplesModel
 import com.example.starwarsapp.network.ApiClient
-import com.example.starwarsapp.network.ApiResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import android.util.Log
 
 class PeoplesRepository {
 
-    fun getPeople(page: Int, onSuccess: (List<PeoplesModel>) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getPeoples(page)
-
-        call.enqueue(object : Callback<ApiResponse<PeoplesModel>> {
-            override fun onResponse(call: Call<ApiResponse<PeoplesModel>>, response: Response<ApiResponse<PeoplesModel>>) {
-                if (response.isSuccessful) {
-                    val peopleList = response.body()?.results
-                    if (!peopleList.isNullOrEmpty()) {
-                        onSuccess(peopleList)
-                    } else {
-                        onError(Throwable("A resposta dos personagens está vazia ou nula"))
-                    }
+    private suspend fun <T> safeApiCall(apiCall: suspend () -> T?): Result<T> {
+        Log.d("PeoplesRepository", "Entrando na safeApiCall")
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = apiCall()
+                if (result != null) {
+                    Result.success(result)
                 } else {
-                    onError(Throwable("Falha ao buscar os personagens: Código ${response.code()}, ${response.message()}"))
+                    Result.failure(Throwable("Resposta vazia"))
                 }
+            } catch (e: Exception) {
+                Result.failure(Throwable("Erro de rede: ${e.message}", e))
             }
-
-            override fun onFailure(call: Call<ApiResponse<PeoplesModel>>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
-            }
-        })
+        }
     }
 
-    fun getPeopleById(id: String, onSuccess: (PeoplesModel) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getPeoplesById(id)
-
-        call.enqueue(object : Callback<PeoplesModel> {
-            override fun onResponse(call: Call<PeoplesModel>, response: Response<PeoplesModel>) {
-                if (response.isSuccessful) {
-                    val person = response.body()
-                    if (person != null) {
-                        onSuccess(person)
-                    } else {
-                        onError(Throwable("Os detalhes da pessoa estão vazios"))
-                    }
-                } else {
-                    onError(Throwable("Falha ao buscar detalhes da pessoa: Código ${response.code()}, ${response.message()}"))
-                }
+    suspend fun getPeople(page: Int): Result<List<PeoplesModel>> {
+        Log.d("PeoplesRepository", "Buscando pessoas para a página: $page")
+        return safeApiCall {
+            val response = ApiClient.apiService.getPeoples(page)
+            if (response.isSuccessful) {
+                response.body()?.results
+            } else {
+                throw Throwable("Falha ao buscar personagens: Código ${response.code()}, ${response.message()}")
             }
+        }
+    }
 
-            override fun onFailure(call: Call<PeoplesModel>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
+    suspend fun getPeopleById(id: String): Result<PeoplesModel> {
+        Log.d("PeoplesRepository", "Buscando detalhes de pessoas para o ID: $id")
+        return safeApiCall {
+            val response = ApiClient.apiService.getPeoplesById(id)
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                throw Throwable("Falha ao buscar detalhes da pessoa: Código ${response.code()}, ${response.message()}")
             }
-        })
+        }
     }
 }

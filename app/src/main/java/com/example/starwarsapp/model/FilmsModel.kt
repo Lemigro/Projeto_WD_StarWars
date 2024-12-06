@@ -1,19 +1,22 @@
 package com.example.starwarsapp.model
 
+import com.google.gson.annotations.SerializedName
+
 data class FilmsModel(
-    val title: String,
-    val episodeId: Int,
-    val openingCrawl: String,
-    val director: String,
-    val producer: String,
-    val releaseDate: String,
-    val characters: List<String>,
-    val planets: List<String>,
-    val starships: List<String>,
-    val vehicles: List<String>,
-    val species: List<String>,
-    val url: String
+    @SerializedName("title") val title: String?,
+    @SerializedName("episode_id") val episodeId: Int?,
+    @SerializedName("opening_crawl") val openingCrawl: String?,
+    @SerializedName("director") val director: String?,
+    @SerializedName("producer") val producer: String?,
+    @SerializedName("release_date") val releaseDate: String?,
+    @SerializedName("characters") val characters: List<String>?,
+    @SerializedName("planets") val planets: List<String>?,
+    @SerializedName("starships") val starships: List<String>?,
+    @SerializedName("vehicles") val vehicles: List<String>?,
+    @SerializedName("species") val species: List<String>?,
+    @SerializedName("url") val url: String?
+) {
+    val id: String?
+        get() = url?.split("/")?.filter { it.isNotEmpty() }?.lastOrNull()
+}
 
-
-
-)

@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/yellow_500"
             android:theme="@style/ToolBarStyle"
-            app:title="Detalhes"
+            app:titleTextAppearance="@style/ToolbarTitleStyle"
             app:layout_scrollFlags="scroll|enterAlways" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -40,7 +40,6 @@
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/placeholder" />
@@ -69,58 +68,20 @@
                 android:layout_marginTop="8dp" />
 
             <TextView
-                android:id="@+id/relatedFilmsLabel"
+                android:id="@+id/additionalDetailsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Related Films"
+                android:text="Detalhes Adicionais"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/itemDescription"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/relatedFilmsRecyclerView"
+                android:id="@+id/additionalDetailsRecyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/relatedFilmsLabel"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:id="@+id/relatedVehiclesLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Related Vehicles"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/relatedFilmsRecyclerView"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/relatedVehiclesRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/relatedVehiclesLabel"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:id="@+id/relatedStarshipsLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Related Starships"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/relatedVehiclesRecyclerView"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/relatedStarshipsRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/relatedStarshipsLabel"
+                app:layout_constraintTop_toBottomOf="@id/additionalDetailsLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="8dp" />
@@ -139,3 +100,4 @@
         app:backgroundTint="@color/yellow_500" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

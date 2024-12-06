@@ -2,11 +2,13 @@ package com.example.starwarsapp.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starwarsapp.databinding.FragmentFilmsBinding
@@ -15,6 +17,7 @@ import com.example.starwarsapp.model.FilmsModel
 import com.example.starwarsapp.repository.FilmsRepository
 import com.example.starwarsapp.view.activity.DetailItemActivity
 import com.example.starwarsapp.view.adapter.FilmsAdapter
+import kotlinx.coroutines.launch
 
 class FilmsFragment : Fragment() {
 
@@ -62,23 +65,32 @@ class FilmsFragment : Fragment() {
 
     private fun loadFilms(page: Int) {
         isLoading = true
-        filmsController.fetchFilms(page,
-            onSuccess = { films ->
-                filmList.addAll(films)
-                filmAdapter.notifyDataSetChanged()
-                isLoading = false
-            },
-            onError = { error ->
-                Toast.makeText(context, "Erro ao carregar filmes: ${error.message}", Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                filmsController.fetchFilms(page,
+                    onSuccess = { films ->
+                        filmList.addAll(films)
+                        filmAdapter.notifyDataSetChanged()
+                        isLoading = false
+                    },
+                    onError = { error ->
+                        Toast.makeText(context, "Erro ao carregar filmes: ${error.message}", Toast.LENGTH_SHORT).show()
+                        isLoading = false
+                    }
+                )
+            } catch (e: Exception) {
+                Toast.makeText(context, "Erro ao carregar filmes: ${e.message}", Toast.LENGTH_SHORT).show()
                 isLoading = false
             }
-        )
+        }
     }
 
     private fun navigateToDetail(filmsModel: FilmsModel) {
+        Log.d("FilmsFragment", "Entrou no navigateToDetail")
         val intent = Intent(requireContext(), DetailItemActivity::class.java).apply {
-            putExtra("ITEM_TITLE", filmsModel.title)
-            putExtra("ITEM_URL", filmsModel.url)
+            putExtra(DetailItemActivity.ITEM_ID, filmsModel.id)
+            putExtra(DetailItemActivity.ITEM_TYPE, "films")
+            Log.d("FilmsFragment", "ITEM_ID: ${filmsModel.id}, ITEM_TYPE: films")
         }
         startActivity(intent)
     }

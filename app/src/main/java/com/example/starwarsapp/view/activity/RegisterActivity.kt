@@ -22,22 +22,45 @@ class RegisterActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         binding.btnRegister.setOnClickListener {
-            val name = binding.edtName.text.toString()
-            val age = binding.edtAge.text.toString()
-            val email = binding.edtEmail.text.toString()
-            val password = binding.edtPassword.text.toString()
+            val name = binding.edtName.text.toString().trim()
+            val age = binding.edtAge.text.toString().trim()
+            val email = binding.edtEmail.text.toString().trim()
+            val password = binding.edtPassword.text.toString().trim()
 
             if (validateFields(name, age, email, password)) {
                 performRegistration(name, age, email, password)
-            } else {
-                showToast("Preencha todos os campos corretamente.")
             }
         }
     }
 
     private fun validateFields(name: String, age: String, email: String, password: String): Boolean {
-        return name.isNotEmpty() && age.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() &&
-                android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return when {
+            name.isEmpty() -> {
+                showToast("O nome não pode estar vazio.")
+                false
+            }
+            age.isEmpty() -> {
+                showToast("A idade não pode estar vazia.")
+                false
+            }
+            email.isEmpty() -> {
+                showToast("O email não pode estar vazio.")
+                false
+            }
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                showToast("O email é inválido.")
+                false
+            }
+            password.isEmpty() -> {
+                showToast("A senha não pode estar vazia.")
+                false
+            }
+            password.length < 6 -> {
+                showToast("A senha deve ter pelo menos 6 caracteres.")
+                false
+            }
+            else -> true
+        }
     }
 
     private fun performRegistration(name: String, age: String, email: String, password: String) {
@@ -46,7 +69,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     user?.let {
-                        saveUserToDatabase(it.uid, name, age, email)
+                        saveUserToDatabase(it.uid, name, age, email, password)
                         showToast("Cadastro realizado com sucesso!")
                         navigateToMainActivity()
                     }
@@ -56,12 +79,13 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    private fun saveUserToDatabase(userId: String, name: String, age: String, email: String) {
+    private fun saveUserToDatabase(userId: String, name: String, age: String, email: String, password: String) {
         val userRef = database.getReference("users").child(userId)
         val user = mapOf(
             "name" to name,
             "age" to age,
-            "email" to email
+            "email" to email,
+            "password" to password
         )
         userRef.setValue(user)
             .addOnSuccessListener {

@@ -5,19 +5,21 @@ import com.example.starwarsapp.repository.SpeciesRepository
 
 class SpeciesController(private val speciesRepository: SpeciesRepository) {
 
-    fun fetchSpecies(page: Int, onSuccess: (List<SpeciesModel>) -> Unit, onError: (Throwable) -> Unit) {
-        speciesRepository.getSpecies(
-            page,
-            onSuccess = { species ->
-                onSuccess(species)
-            },
-            onError = { throwable ->
-                onError(throwable)
-            }
-        )
+    suspend fun fetchSpecies(
+        page: Int,
+        onSuccess: (List<SpeciesModel>) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val result = speciesRepository.getSpecies(page)
+        result.onSuccess(onSuccess).onFailure(onError)
     }
 
-    fun getSpeciesDetails(id: String, onSuccess: (SpeciesModel) -> Unit, onError: (Throwable) -> Unit) {
-        speciesRepository.getSpeciesById(id, onSuccess, onError)
+    suspend fun getSpeciesDetails(
+        id: String,
+        onSuccess: (SpeciesModel) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        val result = speciesRepository.getSpeciesById(id)
+        result.onSuccess(onSuccess).onFailure(onError)
     }
 }

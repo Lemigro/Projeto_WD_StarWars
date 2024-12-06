@@ -1,20 +1,25 @@
 package com.example.starwarsapp.model
 
+import com.google.gson.annotations.SerializedName
+
 data class StarshipsModel(
-    val name: String,
-    val model: String,
-    val manufacturer: String,
-    val costInCredits: String,
-    val length: String,
-    val maxAtmospheringSpeed: String,
-    val crew: String,
-    val passengers: String,
-    val cargoCapacity: String,
-    val consumables: String,
-    val hyperdriveRating: String,
-    val MGLT: String,
-    val starshipClass: String,
-    val pilots: List<String>,
-    val films: List<String>,
-    val url: String
-)
+    @SerializedName("name") val name: String?,
+    @SerializedName("model") val model: String?,
+    @SerializedName("manufacturer") val manufacturer: String?,
+    @SerializedName("cost_in_credits") val costInCredits: String?,
+    @SerializedName("length") val length: String?,
+    @SerializedName("max_atmosphering_speed") val maxAtmospheringSpeed: String?,
+    @SerializedName("crew") val crew: String?,
+    @SerializedName("passengers") val passengers: String?,
+    @SerializedName("cargo_capacity") val cargoCapacity: String?,
+    @SerializedName("consumables") val consumables: String?,
+    @SerializedName("hyperdrive_rating") val hyperdriveRating: String?,
+    @SerializedName("MGLT") val MGLT: String?,
+    @SerializedName("starship_class") val starshipClass: String?,
+    @SerializedName("pilots") val pilots: List<String>?,
+    @SerializedName("films") val films: List<String>?,
+    @SerializedName("url") val url: String?
+) {
+    val id: String?
+        get() = url?.split("/")?.filter { it.isNotEmpty() }?.lastOrNull()
+}

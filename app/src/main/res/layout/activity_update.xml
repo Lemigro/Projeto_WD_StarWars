@@ -48,7 +48,17 @@
         android:id="@+id/edtPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Senha"
+        android:hint="Senha Atual (Não visível)"
+        android:inputType="textPassword"
+        android:enabled="false"
+        android:padding="8dp"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtNewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nova Senha (Opcional)"
         android:inputType="textPassword"
         android:padding="8dp"
         android:textSize="16sp" />
@@ -65,4 +75,15 @@
         android:padding="8dp"
         android:textSize="16sp" />
 
+    <!-- Botão Voltar -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voltar"
+        android:layout_gravity="center"
+        android:background="@color/black"
+        android:textColor="@color/yellow_200"
+        android:padding="8dp"
+        android:textSize="16sp" />
 </LinearLayout>

@@ -2,56 +2,41 @@ package com.example.starwarsapp.repository
 
 import com.example.starwarsapp.model.FilmsModel
 import com.example.starwarsapp.network.ApiClient
-import com.example.starwarsapp.network.ApiResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class FilmsRepository {
 
-    fun getFilms(page: Int, onSuccess: (List<FilmsModel>) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getFilms(page)
-
-        call.enqueue(object : Callback<ApiResponse<FilmsModel>> {
-            override fun onResponse(call: Call<ApiResponse<FilmsModel>>, response: Response<ApiResponse<FilmsModel>>) {
-                if (response.isSuccessful) {
-                    val films = response.body()?.results
-                    if (!films.isNullOrEmpty()) {
-                        onSuccess(films)
-                    } else {
-                        onError(Throwable("A resposta dos filmes está vazia ou nula"))
-                    }
-                } else {
-                    onError(Throwable("Falha ao buscar os filmes: Código ${response.code()}, ${response.message()}"))
-                }
-            }
-
-            override fun onFailure(call: Call<ApiResponse<FilmsModel>>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
-            }
-        })
+    private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
+        return try {
+            Result.success(apiCall())
+        } catch (e: Exception) {
+            Result.failure(Throwable("Erro de rede: ${e.message}", e))
+        }
     }
 
-    fun getFilmById(id: String, onSuccess: (FilmsModel) -> Unit, onError: (Throwable) -> Unit) {
-        val call = ApiClient.apiService.getFilmsById(id)
-
-        call.enqueue(object : Callback<FilmsModel> {
-            override fun onResponse(call: Call<FilmsModel>, response: Response<FilmsModel>) {
-                if (response.isSuccessful) {
-                    val film = response.body()
-                    if (film != null) {
-                        onSuccess(film)
-                    } else {
-                        onError(Throwable("A resposta do filme está vazia"))
-                    }
+    suspend fun getFilms(page: Int): Result<List<FilmsModel>> {
+        return safeApiCall {
+            val response = ApiClient.apiService.getFilms(page)
+            if (response.isSuccessful) {
+                val films = response.body()?.results
+                if (!films.isNullOrEmpty()) {
+                    films
                 } else {
-                    onError(Throwable("Falha ao buscar detalhes do filme: Código ${response.code()}, ${response.message()}"))
+                    throw Throwable("A resposta dos filmes está vazia ou nula")
                 }
+            } else {
+                throw Throwable("Falha ao buscar os filmes: Código ${response.code()}, ${response.message()}")
             }
+        }
+    }
 
-            override fun onFailure(call: Call<FilmsModel>, t: Throwable) {
-                onError(Throwable("Erro de rede: ${t.message}"))
+    suspend fun getFilmById(id: String): Result<FilmsModel> {
+        return safeApiCall {
+            val response = ApiClient.apiService.getFilmsById(id)
+            if (response.isSuccessful) {
+                response.body() ?: throw Throwable("A resposta do filme está vazia")
+            } else {
+                throw Throwable("Falha ao buscar detalhes do filme: Código ${response.code()}, ${response.message()}")
             }
-        })
+        }
     }
 }
