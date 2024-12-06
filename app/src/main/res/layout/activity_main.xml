@@ -8,7 +8,6 @@
     android:gravity="center_horizontal"
     android:padding="16dp">
 
-    <!-- Texto de boas-vindas -->
     <TextView
         android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
@@ -18,10 +17,6 @@
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="24dp" />
-
-    <!-- TabLayout para as abas -->
-
-    <!-- ViewPager2 para as páginas correspondentes às abas -->
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -36,7 +31,6 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- LinearLayout horizontal para os botões -->
     <LinearLayout
 
         android:layout_width="wrap_content"
@@ -44,7 +38,6 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <!-- Botão de Atualizar Cadastro -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnUpdate"
             android:layout_width="119dp"
@@ -57,7 +50,6 @@
             android:textColor="@color/yellow_200"
             android:textSize="16sp" />
 
-        <!-- Botão de Voltar para Login -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnBackLogin"
             android:layout_width="wrap_content"

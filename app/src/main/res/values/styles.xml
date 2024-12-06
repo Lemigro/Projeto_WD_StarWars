@@ -1,18 +1,28 @@
 <resources>
 
-    <!-- Tema padrão da aplicação -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Definindo cores principais -->
-        <item name="colorPrimary">@color/yellow_500</item> <!-- Cor da barra superior -->
-        <item name="colorPrimaryDark">@color/black</item>  <!-- Cor da barra de status -->
+        <item name="colorPrimary">@color/yellow_500</item>
+        <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorOnPrimary">@color/black</item> <!-- Cor do texto da barra superior -->
+        <item name="colorOnPrimary">@color/black</item>
     </style>
 
-    <!-- Estilo personalizado para a Toolbar -->
     <style name="ToolBarStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/yellow_500</item> <!-- Cor amarela para a Toolbar -->
-        <item name="titleTextColor">@color/black</item> <!-- Cor preta para o texto da Toolbar -->
+        <item name="android:background">@color/yellow_500</item>
+        <item name="titleTextAppearance">@style/ToolbarTitleStyle</item>
+        <item name="titleTextColor">@color/black</item>
     </style>
+
+    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <string name="details">Detalhes</string>
+    <string name="no_description_available">Nenhuma descrição disponível</string>
+    <string name="no_name_available">Nenhum nome disponível</string>
+    <string name="error">Erro</string>
 
 </resources>

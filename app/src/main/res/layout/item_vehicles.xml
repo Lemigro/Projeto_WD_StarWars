@@ -6,21 +6,20 @@
     android:gravity="center"
     android:padding="8dp">
 
-    <!-- Imagem do Vehicles -->
     <ImageView
         android:id="@+id/vehiclesImage"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/millennium_falcon" />
+        android:src="@drawable/placeholder" />
 
-    <!-- Nome do Vechiles -->
     <TextView
         android:id="@+id/vehiclesName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Millennium Falcon"
+        android:text="Vehicles"
         android:textSize="16sp"
         android:gravity="center"
         android:layout_marginTop="8dp" />
+
 </LinearLayout>

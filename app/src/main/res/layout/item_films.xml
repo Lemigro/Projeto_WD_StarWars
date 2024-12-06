@@ -6,19 +6,18 @@
     android:gravity="center"
     android:padding="8dp">
 
-    <!-- Imagem dos filmes -->
     <ImageView
         android:id="@+id/filmsImage"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/starwars_newhope" />
+        android:src="@drawable/placeholder" />
 
     <TextView
         android:id="@+id/filmsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Star Wars - Episode IV - A New Hope"
+        android:text="Films"
         android:textSize="16sp"
         android:gravity="center"
         android:layout_marginTop="8dp" />
