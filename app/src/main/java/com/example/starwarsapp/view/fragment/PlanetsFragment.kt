@@ -71,7 +71,7 @@ class PlanetsFragment : Fragment() {
                     page,
                     onSuccess = { planets ->
                         planetsList.addAll(planets)
-//                        planetsAdapter.notifyDataSetChanged()
+                        planetsAdapter.notifyDataSetChanged()
                         isLoading = false
                     },
                     onError = { error ->
